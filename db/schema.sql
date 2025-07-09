@@ -1,8 +1,33 @@
+DROP TABLE IF EXISTS favorited_recipes CASCADE;
+DROP TABLE IF EXISTS photos CASCADE;
+DROP TABLE IF EXISTS recipe CASCADE;
 DROP TABLE IF EXISTS users;
 
+
 CREATE TABLE users (
-  id serial PRIMARY KEY,
-  username text NOT NULL UNIQUE,
+  id SERIAL PRIMARY KEY,
+  username TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL UNIQUE,
-  password text NOT NULL
+  password TEXT NOT NULL
 );
+
+CREATE TABLE recipe (
+  id SERIAL PRIMARY KEY,
+  title TEXT NOT NULL,
+  prep_time INTEGER,
+  ingredient_list TEXT NOT NULL,
+  instruction_list TEXT NOT NULL,
+  photo TEXT NOT NULL,
+  creator_id INTEGER UNIQUE REFERENCES users(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE favorited_recipes (
+  id SERIAL PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(Id) ON DELETE CASCADE,
+  recipe_id INTEGER NOT NULL REFERENCES recipe(Id) ON DELETE CASCADE
+);
+
+CREATE TABLE photos (
+  id SERIAL PRIMARY KEY,
+  img_url TEXT NOT NULL
+)
