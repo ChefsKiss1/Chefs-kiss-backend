@@ -1,5 +1,9 @@
 import express from "express";
-import { createPhoto } from "#db/queries/photos";
+import {
+  createPhoto,
+  deletePhoto,
+  fetchPhotosByRecipeId,
+} from "#db/queries/photos";
 import requireBody from "#middleware/requireBody";
 
 const router = express.Router();
@@ -26,7 +30,7 @@ router
     const { photo_id, url } = req.params;
     const photo = await deletePhoto(photo_id, url);
     if (!photo) return res.status(404).send("Bad Request");
-    res.status(200);
+    res.status(200).json({ message: "Photo deleted successfully" });
   });
 
 export default router;

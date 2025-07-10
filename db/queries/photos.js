@@ -27,7 +27,7 @@ export async function fetchPhotosByRecipeId(recipe_id) {
 
 export async function deletePhoto(photo_id) {
   const sql = `
-  DELETE *
+  DELETE 
   FROM photos
   WHERE id = $1
    RETURNING *
