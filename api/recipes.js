@@ -1,13 +1,16 @@
 import express from "express";
-const router = express.Router();
-export default router;
-
 import {
   createRecipe,
   getAllRecipes,
   getRecipeById,
+  deleteRecipeById,
+  updateRecipeById,
+  getRecipesByUserId,
 } from "#db/queries/recipes";
 import requireBody from "#middleware/requireBody";
+import requireUser from "#middleware/requireUser";
+
+const router = express.Router();
 
 router
   .route("/recipes")
@@ -69,3 +72,54 @@ router.route("/recipes/:id").get(async (req, res) => {
     res.status(500).json({ error: "Failed to fetch recipe" });
   }
 });
+
+router.route("/:id").delete(requireUser, async (req, res) => {
+  const recipeId = req.params.id;
+  const userId = req.user.id;
+
+  const recipe = await getRecipeById(recipeId);
+  if (!recipe) {
+    return res.sendStatus(404);
+  }
+  if (recipe.creator_id !== userId) {
+    return res.sendStatus(403);
+  }
+
+  await deleteRecipeById(recipeId);
+  res.sendStatus(204);
+});
+router
+  .route("/:id")
+  .put(
+    requireUser,
+    requireBody(["title", "ingredient_list", "instruction_list", "photo_id"]),
+    async (req, res) => {
+      const { title, ingredient_list, instruction_list, photo_id } = req.body;
+      const recipeId = req.params.id;
+
+      const recipe = await getRecipeById(recipeId);
+      if (!recipe) {
+        return res.sendStatus(404);
+      }
+      if (recipe.creator_id !== req.user.id) {
+        return res.sendStatus(403);
+      }
+
+      const updatedRecipe = await updateRecipeById(
+        recipeId,
+        title,
+        ingredient_list,
+        instruction_list,
+        photo_id
+      );
+      res.send(updatedRecipe);
+    }
+  );
+
+router.route("/my-recipes").get(requireUser, async (req, res) => {
+  const user_id = req.user.id;
+  const recipes = await getRecipesByUserId(user_id);
+  res.status(200).json(recipes);
+});
+
+export default router;
