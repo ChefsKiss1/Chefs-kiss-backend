@@ -2,6 +2,7 @@ import express from "express";
 const app = express();
 export default app;
 
+import recipeRouter from "./api/recipes.js";
 import usersRouter from "#api/users";
 import getUserFromToken from "#middleware/getUserFromToken";
 import handlePostgresErrors from "#middleware/handlePostgresErrors";
@@ -20,9 +21,10 @@ app.use(getUserFromToken);
 app.get("/", (req, res) => res.send("Hello, World!"));
 
 app.use("/users", usersRouter);
+app.use("/recipes", recipeRouter);
 
-app.use(handlePostgresErrors);
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send("Sorry! Something went wrong.");
-});
+// app.use(handlePostgresErrors);
+// app.use((err, req, res, next) => {
+//   console.error(err);
+//   res.status(500).send("Sorry! Something went wrong.");
+// });

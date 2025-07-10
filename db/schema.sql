@@ -9,6 +9,10 @@ CREATE TABLE users (
   email TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL
 );
+CREATE TABLE photos (
+  id SERIAL PRIMARY KEY,
+  img_url TEXT NOT NULL
+);
 
 CREATE TABLE photos (
   id SERIAL PRIMARY KEY,
@@ -21,8 +25,8 @@ CREATE TABLE recipe (
   prep_time INTEGER,
   ingredient_list TEXT NOT NULL,
   instruction_list TEXT NOT NULL,
-  photo_id INTEGER REFERENCES photos(id) ON DELETE SET NULL,
-  creator_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
+  photo_id INTEGER NOT NULL REFERENCES photo(Id) ON DELETE CASCADE,
+  creator_id INTEGER UNIQUE REFERENCES users(Id) ON DELETE CASCADE,
 );
 
 CREATE TABLE favorited_recipes (
