@@ -3,12 +3,16 @@ DROP TABLE IF EXISTS photos CASCADE;
 DROP TABLE IF EXISTS recipe CASCADE;
 DROP TABLE IF EXISTS users;
 
-
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username TEXT NOT NULL UNIQUE,
   email TEXT NOT NULL UNIQUE,
   password TEXT NOT NULL
+);
+
+CREATE TABLE photos (
+  id SERIAL PRIMARY KEY,
+  img_url TEXT NOT NULL
 );
 
 CREATE TABLE recipe (
@@ -17,17 +21,13 @@ CREATE TABLE recipe (
   prep_time INTEGER,
   ingredient_list TEXT NOT NULL,
   instruction_list TEXT NOT NULL,
-  photo TEXT NOT NULL,
-  creator_id INTEGER UNIQUE REFERENCES users(Id) ON DELETE CASCADE
+  photo_id INTEGER REFERENCES photos(id) ON DELETE SET NULL,
+  creator_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE favorited_recipes (
   id SERIAL PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(Id) ON DELETE CASCADE,
-  recipe_id INTEGER NOT NULL REFERENCES recipe(Id) ON DELETE CASCADE
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  recipe_id INTEGER NOT NULL REFERENCES recipe(id) ON DELETE CASCADE,
+  UNIQUE(user_id, recipe_id)
 );
-
-CREATE TABLE photos (
-  id SERIAL PRIMARY KEY,
-  img_url TEXT NOT NULL
-)
