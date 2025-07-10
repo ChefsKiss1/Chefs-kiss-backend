@@ -68,6 +68,7 @@ export async function getRecipeById(id) {
   } = await db.query(sql, [id]);
   return wholeRecipe;
 }
+
 export async function deleteRecipeById(id) {
   const sql = `
   DELETE FROM recipe
@@ -94,7 +95,13 @@ export async function updateRecipeById(
    `;
   const {
     rows: [recipe],
-  } = await db.query(sql, [id, title, ingredient_list, instruction_list, photo_id]);
+  } = await db.query(sql, [
+    id,
+    title,
+    ingredient_list,
+    instruction_list,
+    photo_id,
+  ]);
   return recipe;
 }
 

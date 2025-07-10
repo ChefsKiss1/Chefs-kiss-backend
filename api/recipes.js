@@ -73,53 +73,49 @@ router.route("/recipes/:id").get(async (req, res) => {
   }
 });
 
-router.route("/:id").delete(requireUser, async (req, res) => {
-  const recipeId = req.params.id;
-  const userId = req.user.id;
-
-  const recipe = await getRecipeById(recipeId);
-  if (!recipe) {
-    return res.sendStatus(404);
+router.route("/recipes/:id").delete(requireUser, async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteRecipeById(id);
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete recipe" });
   }
-  if (recipe.creator_id !== userId) {
-    return res.sendStatus(403);
-  }
-
-  await deleteRecipeById(recipeId);
-  res.sendStatus(204);
 });
+
 router
-  .route("/:id")
+  .route("/recipes/:id")
   .put(
-    requireUser,
     requireBody(["title", "ingredient_list", "instruction_list", "photo_id"]),
+    requireUser,
     async (req, res) => {
-      const { title, ingredient_list, instruction_list, photo_id } = req.body;
-      const recipeId = req.params.id;
+      try {
+        const { id } = req.params;
+        const { title, ingredient_list, instruction_list, photo_id } = req.body;
 
-      const recipe = await getRecipeById(recipeId);
-      if (!recipe) {
-        return res.sendStatus(404);
-      }
-      if (recipe.creator_id !== req.user.id) {
-        return res.sendStatus(403);
-      }
+        const updatedRecipe = await updateRecipeById(
+          id,
+          title,
+          ingredient_list,
+          instruction_list,
+          photo_id
+        );
 
-      const updatedRecipe = await updateRecipeById(
-        recipeId,
-        title,
-        ingredient_list,
-        instruction_list,
-        photo_id
-      );
-      res.send(updatedRecipe);
+        res.status(200).json(updatedRecipe);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to update recipe" });
+      }
     }
   );
 
-router.route("/my-recipes").get(requireUser, async (req, res) => {
-  const user_id = req.user.id;
-  const recipes = await getRecipesByUserId(user_id);
-  res.status(200).json(recipes);
+router.route("/recipes/user/:user_id").get(async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const recipes = await getRecipesByUserId(user_id);
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user recipes" });
+  }
 });
 
 export default router;
