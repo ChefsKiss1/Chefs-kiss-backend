@@ -14,11 +14,6 @@ CREATE TABLE photos (
   img_url TEXT NOT NULL
 );
 
-CREATE TABLE photos (
-  id SERIAL PRIMARY KEY,
-  img_url TEXT NOT NULL
-);
-
 CREATE TABLE recipe (
   id SERIAL PRIMARY KEY,
   title TEXT NOT NULL,
