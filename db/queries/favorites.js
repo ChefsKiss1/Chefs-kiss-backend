@@ -14,7 +14,7 @@ export const getAllFavoritedRecipes = async () => {
     FROM favorited_recipes
     JOIN recipe ON favorited_recipes.recipe_id = recipe.id
     JOIN users ON favorited_recipes.user_id = users.id
-    LEFT JOIN photos ON recipe.photo_id = photos.id
+    LEFT JOIN photos ON photos.recipe_id = recipe.id
     `
   );
   return rows;
@@ -48,6 +48,7 @@ export const deleteRecipeFromFavorites = async (userId, recipeId) => {
   return deleted;
 };
 
+
 export const getTopFavoritedRecipes = async (limit = 9) => {
   const { rows } = await db.query(
     `
@@ -69,3 +70,4 @@ export const getTopFavoritedRecipes = async (limit = 9) => {
   );
   return rows;
 };
+
