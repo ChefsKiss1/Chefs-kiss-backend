@@ -13,25 +13,13 @@ import requireUser from "#middleware/requireUser";
 const router = express.Router();
 
 router
-  .route("/recipes")
+  .route("/")
   .post(
-    requireBody([
-      "title",
-      "prep_time",
-      "ingredient_list",
-      "instruction_list",
-      "creator_id",
-    ]),
+    requireBody(["title", "prepTime", "ingredientList", "instructionList"]),
     async (req, res) => {
       try {
-        const {
-          title,
-          prep_time: prepTime,
-          ingredient_list: ingredientList,
-          instruction_list: instructionList,
-          creator_id: creatorId,
-        } = req.body;
-
+        const { title, prepTime, ingredientList, instructionList } = req.body;
+        const creatorId = req.user.id;
         const recipe = await createRecipe(
           title,
           prepTime,
