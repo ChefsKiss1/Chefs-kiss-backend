@@ -1,5 +1,4 @@
-import db from "#db/client.js";
-
+import db from "#db/client";
 
 export const getAllFavoritedRecipes = async () => {
   const { rows } = await db.query(
@@ -15,14 +14,16 @@ export const getAllFavoritedRecipes = async () => {
     FROM favorited_recipes
     JOIN recipe ON favorited_recipes.recipe_id = recipe.id
     JOIN users ON favorited_recipes.user_id = users.id
-    LEFT JOIN photos ON recipe.photo_id = photos.id
+    LEFT JOIN photos ON photos.recipe_id = recipe.id
     `
   );
   return rows;
 };
 
 export const addRecipeToFavorites = async (userId, recipeId) => {
-  const { rows: [favorite] } = await db.query(
+  const {
+    rows: [favorite],
+  } = await db.query(
     `
     INSERT INTO favorited_recipes(user_id, recipe_id)
     VALUES ($1, $2)
@@ -34,7 +35,9 @@ export const addRecipeToFavorites = async (userId, recipeId) => {
 };
 
 export const deleteRecipeFromFavorites = async (userId, recipeId) => {
-  const { rows: [deleted] } = await db.query(
+  const {
+    rows: [deleted],
+  } = await db.query(
     `
     DELETE FROM favorited_recipes
     WHERE user_id = $1 AND recipe_id = $2

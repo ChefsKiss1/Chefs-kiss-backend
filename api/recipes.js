@@ -20,7 +20,6 @@ router
       "prep_time",
       "ingredient_list",
       "instruction_list",
-      "photo_id",
       "creator_id",
     ]),
     async (req, res) => {
@@ -30,7 +29,6 @@ router
           prep_time: prepTime,
           ingredient_list: ingredientList,
           instruction_list: instructionList,
-          photo_id: photoId,
           creator_id: creatorId,
         } = req.body;
 
@@ -39,7 +37,6 @@ router
           prepTime,
           ingredientList,
           instructionList,
-          photoId,
           creatorId
         );
 
@@ -86,19 +83,18 @@ router.route("/recipes/:id").delete(requireUser, async (req, res) => {
 router
   .route("/recipes/:id")
   .put(
-    requireBody(["title", "ingredient_list", "instruction_list", "photo_id"]),
+    requireBody(["title", "ingredient_list", "instruction_list"]),
     requireUser,
     async (req, res) => {
       try {
         const { id } = req.params;
-        const { title, ingredient_list, instruction_list, photo_id } = req.body;
+        const { title, ingredient_list, instruction_list } = req.body;
 
         const updatedRecipe = await updateRecipeById(
           id,
           title,
           ingredient_list,
-          instruction_list,
-          photo_id
+          instruction_list
         );
 
         res.status(200).json(updatedRecipe);

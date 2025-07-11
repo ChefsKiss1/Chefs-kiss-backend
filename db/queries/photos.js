@@ -1,31 +1,31 @@
 import db from "#db/client";
 
-export async function createPhoto(recipe_id, url) {
+export async function createPhoto(recipeId, url) {
   const sql = `
   INSERT INTO photos
-    (recipe_id, url)
+    (recipe_id, img_url)
   VALUES
     ($1, $2)
   RETURNING *
   `;
   const {
     rows: [photo],
-  } = await db.query(sql, [recipe_id, url]);
+  } = await db.query(sql, [recipeId, url]);
   return photo;
 }
 
-export async function fetchPhotosByRecipeId(recipe_id) {
+export async function fetchPhotosByRecipeId(recipeId) {
   const sql = `
   SELECT *
   FROM photos
   WHERE recipe_id= $1
   `;
-  const { rows } = await db.query(sql, [recipe_id]);
+  const { rows } = await db.query(sql, [recipeId]);
 
   return rows;
 }
 
-export async function deletePhoto(photo_id) {
+export async function deletePhoto(recipeId) {
   const sql = `
   DELETE 
   FROM photos
@@ -34,6 +34,6 @@ export async function deletePhoto(photo_id) {
   `;
   const {
     rows: [photo],
-  } = await db.query(sql, [photo_id]);
+  } = await db.query(sql, [recipeId]);
   return photo;
 }

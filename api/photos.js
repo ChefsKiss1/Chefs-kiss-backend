@@ -25,10 +25,10 @@ router.route("/photos/:recipe_id").get(async (req, res) => {
 });
 
 router
-  .route("/photos/:photo_id")
+  .route("/photos/:recipe_id")
   .delete(requireBody(["url"]), async (req, res) => {
-    const { photo_id, url } = req.params;
-    const photo = await deletePhoto(photo_id, url);
+    const { recipe_id, url } = req.params;
+    const photo = await deletePhoto(recipe_id, url);
     if (!photo) return res.status(404).send("Bad Request");
     res.status(200).json({ message: "Photo deleted successfully" });
   });
