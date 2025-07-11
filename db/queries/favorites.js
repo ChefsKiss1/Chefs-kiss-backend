@@ -47,3 +47,27 @@ export const deleteRecipeFromFavorites = async (userId, recipeId) => {
   );
   return deleted;
 };
+
+
+export const getTopFavoritedRecipes = async (limit = 9) => {
+  const { rows } = await db.query(
+    `
+    SELECT
+      recipe.id,
+      recipe.title AS name,
+      users.username,
+      COUNT(favorited_recipes.recipe_id) AS favoriteCount,
+      photos.img_url
+    FROM recipe
+    JOIN favorited_recipes ON recipe.id = favorited_recipes.recipe_id
+    JOIN users ON recipe.user_id = users.id
+    LEFT JOIN photos ON recipe.photo_id = photos.id
+    GROUP BY recipe.id, recipe.title, users.username, photos.img_url
+    ORDER BY favoriteCount DESC
+    LIMIT $1
+    `,
+    [limit]
+  );
+  return rows;
+};
+
