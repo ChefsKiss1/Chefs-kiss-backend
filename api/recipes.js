@@ -6,6 +6,7 @@ import {
   deleteRecipeById,
   updateRecipeById,
   getRecipesByUserId,
+  getRandomRecipes,
 } from "#db/queries/recipes";
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
@@ -99,6 +100,17 @@ router.route("/recipes/user/:user_id").get(async (req, res) => {
     res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch user recipes" });
+  }
+});
+
+router.get("/random", async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const randomRecipes = await getRandomRecipes(limit);
+    res.json(randomRecipes);
+  } catch (error) {
+    console.error("Error fetching random recipes:", error);
+    res.status(500).json({ error: "Failed to fetch random recipes" });
   }
 });
 
