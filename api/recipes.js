@@ -95,10 +95,12 @@ router
     }
   );
 
-router.route("/user/:user_id").get(async (req, res) => {
+router.route("/user").get(requireUser, async (req, res) => {
   try {
-    const { user_id } = req.params;
-    const recipes = await getRecipesByUserId(user_id);
+    console.log(req.user);
+    //const { id } = req.user;
+    const recipes = await getRecipesByUserId(req.user.id);
+    console.log(recipes);
     res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch user recipes" });

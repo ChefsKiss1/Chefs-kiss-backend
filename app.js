@@ -29,7 +29,7 @@ app.get("/", (req, res) => res.send("Hello, World!"));
 
 app.use("/users", usersRouter);
 app.use("/recipes", recipeRouter);
-app.use("/recipes/favorites", favoritesRouter);
+app.use("/favorites", favoritesRouter);
 app.use("/photos", photosRouter);
 
 app.use(handlePostgresErrors);
