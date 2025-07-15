@@ -104,6 +104,7 @@ export async function updateRecipeById(
 }
 
 export async function getRecipesByUserId(user_id) {
+  console.log(user_id);
   const sql = `
     SELECT 
       recipe.id,
@@ -111,14 +112,15 @@ export async function getRecipesByUserId(user_id) {
       recipe.prep_time, 
       recipe.ingredient_list,
       recipe.instruction_list,
-      phtos.recipe_id, 
+      photos.recipe_id, 
       users.username,
       photos.img_url
     FROM recipe
     JOIN users ON recipe.creator_id = users.id
     LEFT JOIN photos ON photos.recipe_id = recipe.id
-    WHERE recipe.creator_id = $1
+    WHERE recipe.creator_id = $1;
   `;
   const { rows } = await db.query(sql, [user_id]);
+  console.log(rows);
   return rows;
 }
