@@ -37,9 +37,8 @@ export async function getAllRecipes() {
       photos.img_url
     FROM recipe
     JOIN users ON recipe.creator_id = users.id
-    LEFT JOIN photos ON photos.recipe_id = photos.id
+    LEFT JOIN photos ON photos.recipe_id = recipe.id
   `;
-
   const { rows: allRecipes } = await db.query(sql);
   return allRecipes;
 }
@@ -87,7 +86,7 @@ export async function updateRecipeById(
     title = $2,
     prep_time = $3,
     ingredient_list = $4,
-    instruction_list = $5,
+    instruction_list = $5
     WHERE id = $1
     RETURNING *
    `;
@@ -122,5 +121,24 @@ export async function getRecipesByUserId(user_id) {
   `;
   const { rows } = await db.query(sql, [user_id]);
   console.log(rows);
+  return rows;
+}
+
+export async function getRandomRecipes(limit = 9) {
+  const sql = `
+    SELECT 
+      recipe.id,
+      recipe.title AS name,
+      recipe.prep_time, 
+      photos.recipe_id, 
+      users.username,
+      photos.img_url
+    FROM recipe
+    JOIN users ON recipe.creator_id = users.id
+    LEFT JOIN photos ON photos.recipe_id = recipe.id
+    ORDER BY RANDOM()
+    LIMIT $1
+  `;
+  const { rows } = await db.query(sql, [limit]);
   return rows;
 }
