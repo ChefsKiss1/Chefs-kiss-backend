@@ -16,7 +16,7 @@ CREATE TABLE recipe (
   prep_time INTEGER,
   ingredient_list TEXT NOT NULL,
   instruction_list TEXT NOT NULL,
-  creator_id INTEGER UNIQUE REFERENCES users(Id) ON DELETE CASCADE
+  creator_id INTEGER NOT NULL REFERENCES users(Id) ON DELETE CASCADE
 );
 
 CREATE TABLE photos (

@@ -17,7 +17,12 @@ app.use(morgan("dev"));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+// these lines added
+// app.use(express.static(path.join(__dirname, "build"))); // this wil change depending on how we deploy our frontend
 
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "build", "index.html"));
+// });
 app.use(getUserFromToken);
 
 app.get("/", (req, res) => res.send("Hello, World!"));
@@ -27,8 +32,8 @@ app.use("/recipes", recipeRouter);
 app.use("/favorites", favoritesRouter);
 app.use("/photos", photosRouter);
 
-// app.use(handlePostgresErrors);
-// app.use((err, req, res, next) => {
-//   console.error(err);
-//   res.status(500).send("Sorry! Something went wrong.");
-// });
+app.use(handlePostgresErrors);
+app.use((err, req, res, next) => {
+  console.error(err);
+  res.status(500).send("Sorry! Something went wrong.");
+});

@@ -16,7 +16,7 @@ router
   .route("/")
   .post(
     requireBody(["title", "prepTime", "ingredientList", "instructionList"]),
-    async (req, res) => {
+    async (req, res, next) => {
       try {
         const { title, prepTime, ingredientList, instructionList } = req.body;
         const creatorId = req.user.id;
@@ -30,11 +30,14 @@ router
 
         res.status(201).json(recipe);
       } catch (error) {
-        res.status(500).json({ error: "Failed to create recipe" });
+        console.error(error);
+        next(error);
+        // res.status(500).json({ error: "Failed to create recipe" },);
       }
     }
   )
   .get(async (req, res) => {
+    /// middleware logic and what actully doing
     try {
       const recipes = await getAllRecipes();
       res.status(200).json(recipes);
@@ -43,7 +46,7 @@ router
     }
   });
 
-router.route("/recipes/:id").get(async (req, res) => {
+router.route("/:id").get(async (req, res) => {
   try {
     const { id } = req.params;
     const recipe = await getRecipeById(id);
@@ -58,7 +61,7 @@ router.route("/recipes/:id").get(async (req, res) => {
   }
 });
 
-router.route("/recipes/:id").delete(requireUser, async (req, res) => {
+router.route("/:id").delete(requireUser, async (req, res) => {
   try {
     const { id } = req.params;
     await deleteRecipeById(id);
@@ -69,7 +72,7 @@ router.route("/recipes/:id").delete(requireUser, async (req, res) => {
 });
 
 router
-  .route("/recipes/:id")
+  .route("/:id")
   .put(
     requireBody(["title", "ingredient_list", "instruction_list"]),
     requireUser,
