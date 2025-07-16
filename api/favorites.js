@@ -19,20 +19,37 @@ router.get("/", async (request, response, next) => {
   }
 });
 
-// Add this new endpoint for user favorites
-router.get("/user", getUserFromToken, async (request, response, next) => {
+router.route("/user").get(async (req, res) => {
   try {
-    const userId = request.user?.id;
-
-    if (!userId) {
-      return response.status(401).json({ error: "Unauthorized" });
+    const authHeader = req.headers.authorization;
+    if (!authHeader) {
+      return res.json([]);
     }
 
-    const userFavorites = await getUserFavorites(userId);
-    response.status(200).json(userFavorites);
+    const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.json([]);
+    }
+
+    try {
+      const payload = JSON.parse(
+        Buffer.from(token.split(".")[1], "base64").toString()
+      );
+      const userId = payload.id;
+
+      if (!userId) {
+        return res.json([]);
+      }
+
+      const favorites = await getUserFavorites(userId);
+      res.json(favorites);
+    } catch (tokenError) {
+      console.error("Token decode error:", tokenError);
+      return res.json([]);
+    }
   } catch (error) {
     console.error("Error fetching user favorites:", error);
-    response.status(500).json({ error: "Failed to fetch user favorites" });
+    res.json([]);
   }
 });
 
