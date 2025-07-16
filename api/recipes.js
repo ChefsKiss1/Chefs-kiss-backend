@@ -47,6 +47,29 @@ router
     }
   });
 
+router.get("/random", async (req, res) => {
+  try {
+    const limit = parseInt(req.query.limit) || 9;
+    const randomRecipes = await getRandomRecipes(limit);
+    res.json(randomRecipes);
+  } catch (error) {
+    console.error("Error fetching random recipes:", error);
+    res.status(500).json({ error: "Failed to fetch random recipes" });
+  }
+});
+
+router.route("/user").get(requireUser, async (req, res) => {
+  try {
+    console.log(req.user);
+    //const { id } = req.user;
+    const recipes = await getRecipesByUserId(req.user.id);
+    console.log(recipes);
+    res.status(200).json(recipes);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to fetch user recipes" });
+  }
+});
+
 router.route("/:id").get(async (req, res) => {
   try {
     const { id } = req.params;
@@ -95,28 +118,5 @@ router
       }
     }
   );
-
-router.route("/user").get(requireUser, async (req, res) => {
-  try {
-    console.log(req.user);
-    //const { id } = req.user;
-    const recipes = await getRecipesByUserId(req.user.id);
-    console.log(recipes);
-    res.status(200).json(recipes);
-  } catch (error) {
-    res.status(500).json({ error: "Failed to fetch user recipes" });
-  }
-});
-
-router.get("/random", async (req, res) => {
-  try {
-    const limit = parseInt(req.query.limit) || 9;
-    const randomRecipes = await getRandomRecipes(limit);
-    res.json(randomRecipes);
-  } catch (error) {
-    console.error("Error fetching random recipes:", error);
-    res.status(500).json({ error: "Failed to fetch random recipes" });
-  }
-});
 
 export default router;
