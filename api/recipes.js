@@ -2,7 +2,7 @@ import express from "express";
 import {
   createRecipe,
   getAllRecipes,
-  getRecipeById,
+  getRecipeWithPhotosById, // Use this to fetch recipe + photos
   deleteRecipeById,
   updateRecipeById,
   getRecipesByUserId,
@@ -12,9 +12,19 @@ import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
 
 const router = express.Router();
-
+router.use(express.json());
 router
   .route("/")
+  .get(async (req, res) => {
+    try {
+      const recipes = await getAllRecipes();
+      console.log(recipes);
+      res.status(200).json(recipes);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch recipes" });
+    }
+  })
+
   .post(
     requireBody(["title", "prepTime", "ingredientList", "instructionList"]),
     async (req, res, next) => {
@@ -33,19 +43,11 @@ router
       } catch (error) {
         console.error(error);
         next(error);
-        // res.status(500).json({ error: "Failed to create recipe" },);
       }
     }
-  )
-  .get(async (req, res) => {
-    /// middleware logic and what actully doing
-    try {
-      const recipes = await getAllRecipes();
-      res.status(200).json(recipes);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch recipes" });
-    }
-  });
+  );
+
+// GET recipe by ID with photos
 
 router.get("/random", async (req, res) => {
   try {
@@ -60,25 +62,19 @@ router.get("/random", async (req, res) => {
 
 router.route("/user").get(requireUser, async (req, res) => {
   try {
-    console.log(req.user);
-    //const { id } = req.user;
     const recipes = await getRecipesByUserId(req.user.id);
-    console.log(recipes);
     res.status(200).json(recipes);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch user recipes" });
   }
 });
-
 router.route("/:id").get(async (req, res) => {
   try {
     const { id } = req.params;
-    const recipe = await getRecipeById(id);
-
+    const recipe = await getRecipeWithPhotosById(id);
     if (!recipe) {
       return res.status(404).json({ error: "Recipe not found" });
     }
-
     res.status(200).json(recipe);
   } catch (error) {
     res.status(500).json({ error: "Failed to fetch recipe" });
