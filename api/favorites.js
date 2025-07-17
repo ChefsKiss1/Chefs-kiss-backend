@@ -1,5 +1,4 @@
 import express from "express";
-import getUserFromToken from "#middleware/getUserFromToken";
 import {
   getAllFavoritedRecipes,
   addRecipeToFavorites,
@@ -44,54 +43,51 @@ router.route("/user").get(async (req, res) => {
       const favorites = await getUserFavorites(userId);
       res.json(favorites);
     } catch (tokenError) {
-      console.error("Token decode error:", tokenError);
-      return res.json([]);
+      console.error("Token parsing error:", tokenError);
+      res.json([]);
     }
   } catch (error) {
-    console.error("Error fetching user favorites:", error);
-    res.json([]);
+    console.error("Error in /user favorites route:", error);
+    res.status(500).json({ error: "Failed to fetch user favorites" });
   }
 });
 
 router.post("/", async (request, response, next) => {
   try {
     const { recipe_id, user_id } = request.body;
+
     if (!user_id || !recipe_id) {
-      return response
-        .status(400)
-        .json({ error: "Missing user_id or recipe_id" });
+      return response.status(400).json({
+        error: "Missing user_id or recipe_id",
+        received: { user_id, recipe_id },
+      });
     }
+
     const favorite = await addRecipeToFavorites(user_id, recipe_id);
     response.status(201).json(favorite);
   } catch (error) {
-    console.error("Error adding to favorites:", error);
-    response.status(500).json({ error: "Failed to add favorite" });
+    console.error("Error in POST /favorites:", error);
+    response.status(500).json({
+      error: "Failed to add favorite",
+      details: error.message,
+    });
   }
 });
 
 router.delete("/:id", async (request, response, next) => {
   try {
     const { id } = request.params;
-    const { user_id } = request.body;
-
-    if (!user_id || !id) {
-      return response
-        .status(400)
-        .json({ error: "Missing user_id or recipe_id" });
-    }
-
-    const result = await deleteRecipeFromFavorites(user_id, id);
-    response.status(200).json(result);
+    const favorite = await deleteRecipeFromFavorites(id);
+    response.status(200).json(favorite);
   } catch (error) {
-    console.error("Error removing from favorites:", error);
-    response.status(500).json({ error: "Failed to remove favorite" });
+    response.status(500).json({ error: "Failed to delete favorite" });
   }
 });
 
 router.get("/top-favorited", async (request, response, next) => {
   try {
-    const topFavorites = await getTopFavoritedRecipes();
-    response.status(200).json(topFavorites);
+    const favorites = await getTopFavoritedRecipes();
+    response.status(200).json(favorites);
   } catch (error) {
     response.status(500).json({ error: "Failed to fetch top favorites" });
   }

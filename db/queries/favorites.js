@@ -21,17 +21,32 @@ export const getAllFavoritedRecipes = async () => {
 };
 
 export const addRecipeToFavorites = async (userId, recipeId) => {
-  const {
-    rows: [favorite],
-  } = await db.query(
-    `
-    INSERT INTO favorited_recipes(user_id, recipe_id)
-    VALUES ($1, $2)
-    RETURNING *
-    `,
-    [userId, recipeId]
-  );
-  return favorite;
+  try {
+    const existingCheck = await db.query(
+      `SELECT * FROM favorited_recipes WHERE user_id = $1 AND recipe_id = $2`,
+      [userId, recipeId]
+    );
+
+    if (existingCheck.rows.length > 0) {
+      return existingCheck.rows[0];
+    }
+
+    const {
+      rows: [favorite],
+    } = await db.query(
+      `
+      INSERT INTO favorited_recipes(user_id, recipe_id)
+      VALUES ($1, $2)
+      RETURNING *
+      `,
+      [userId, recipeId]
+    );
+
+    return favorite;
+  } catch (error) {
+    console.error("Database error in addRecipeToFavorites:", error);
+    throw error;
+  }
 };
 
 export const deleteRecipeFromFavorites = async (userId, recipeId) => {
@@ -73,13 +88,23 @@ export const getTopFavoritedRecipes = async (limit = 9) => {
 export const getUserFavorites = async (userId) => {
   const { rows } = await db.query(
     `SELECT 
-      favorited_recipes.id,
-      favorited_recipes.user_id,
+      recipe.id,
+      recipe.title as name,
+      recipe.prep_time,
+      recipe.ingredient_list as ingredients,
+      recipe.instruction_list as instructions,
+      recipe.creator_id,
+      users.username,
+      photos.img_url,
       favorited_recipes.recipe_id,
-      recipe.title as recipe_name
+      COUNT(all_favorites.recipe_id) as favoritecount
      FROM favorited_recipes 
      JOIN recipe ON favorited_recipes.recipe_id = recipe.id 
-     WHERE favorited_recipes.user_id = $1`,
+     JOIN users ON recipe.creator_id = users.id
+     LEFT JOIN photos ON photos.recipe_id = recipe.id
+     LEFT JOIN favorited_recipes as all_favorites ON all_favorites.recipe_id = recipe.id
+     WHERE favorited_recipes.user_id = $1
+     GROUP BY recipe.id, recipe.title, recipe.prep_time, recipe.ingredient_list, recipe.instruction_list, recipe.creator_id, users.username, photos.img_url, favorited_recipes.recipe_id`,
     [userId]
   );
   return rows;
