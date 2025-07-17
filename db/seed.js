@@ -27,7 +27,7 @@ async function seed() {
   const recipeData = [
     {
       name: "Classic Pancakes",
-      servings: 4,
+      prep_time: 15,
       ingredients: "flour, eggs, milk, sugar, baking powder",
       instructions:
         "Mix dry ingredients. Whisk wet ingredients separately. Combine and cook on griddle.",
@@ -36,7 +36,7 @@ async function seed() {
     },
     {
       name: "Chicken Stir Fry",
-      servings: 2,
+      prep_time: 20,
       ingredients: "chicken breast, soy sauce, vegetables, garlic, ginger",
       instructions:
         "Cut chicken into strips. Heat oil in wok. Cook chicken first, then vegetables. Add sauce.",
@@ -44,7 +44,7 @@ async function seed() {
     },
     {
       name: "Chocolate Chip Cookies",
-      servings: 12,
+      prep_time: 25,
       ingredients: "flour, butter, sugar, chocolate chips, eggs",
       instructions:
         "Cream butter and sugar. Add eggs. Mix in dry ingredients and chips. Bake at 375°F.",
@@ -52,7 +52,7 @@ async function seed() {
     },
     {
       name: "Caesar Salad",
-      servings: 3,
+      prep_time: 10,
       ingredients: "romaine lettuce, parmesan, croutons, caesar dressing",
       instructions:
         "Chop lettuce. Toss with dressing. Top with cheese and croutons.",
@@ -60,7 +60,7 @@ async function seed() {
     },
     {
       name: "Beef Tacos",
-      servings: 4,
+      prep_time: 25,
       ingredients: "ground beef, taco shells, cheese, lettuce, tomatoes",
       instructions:
         "Brown beef with seasonings. Warm shells. Fill with beef and toppings.",
@@ -68,7 +68,7 @@ async function seed() {
     },
     {
       name: "Mushroom Risotto",
-      servings: 3,
+      prep_time: 35,
       ingredients:
         "arborio rice, mushrooms, chicken stock, white wine, parmesan",
       instructions:
@@ -77,7 +77,7 @@ async function seed() {
     },
     {
       name: "Banana Bread",
-      servings: 8,
+      prep_time: 75,
       ingredients: "bananas, flour, sugar, eggs, butter, baking soda",
       instructions:
         "Mash bananas. Cream butter and sugar. Add eggs and bananas. Mix in dry ingredients.",
@@ -85,7 +85,7 @@ async function seed() {
     },
     {
       name: "Grilled Salmon",
-      servings: 2,
+      prep_time: 15,
       ingredients: "salmon fillets, lemon, olive oil, herbs, salt, pepper",
       instructions:
         "Season salmon. Preheat grill. Cook 4-5 minutes per side. Serve with lemon.",
@@ -93,7 +93,7 @@ async function seed() {
     },
     {
       name: "Vegetable Soup",
-      servings: 6,
+      prep_time: 30,
       ingredients: "mixed vegetables, vegetable broth, onion, garlic, herbs",
       instructions:
         "Sauté onion and garlic. Add vegetables and broth. Simmer until tender.",
@@ -101,7 +101,7 @@ async function seed() {
     },
     {
       name: "Pizza Margherita",
-      servings: 4,
+      prep_time: 45,
       ingredients: "pizza dough, tomato sauce, mozzarella, basil, olive oil",
       instructions:
         "Roll out dough. Spread sauce. Add cheese and basil. Bake at 500°F.",
@@ -109,7 +109,7 @@ async function seed() {
     },
     {
       name: "French Toast",
-      servings: 3,
+      prep_time: 15,
       ingredients: "bread, eggs, milk, cinnamon, vanilla, butter",
       instructions:
         "Whisk eggs, milk, and spices. Dip bread. Cook in buttered pan until golden.",
@@ -117,7 +117,7 @@ async function seed() {
     },
     {
       name: "Chicken Curry",
-      servings: 4,
+      prep_time: 40,
       ingredients: "chicken, curry powder, coconut milk, onion, garlic, ginger",
       instructions:
         "Sauté aromatics. Add chicken and spices. Pour in coconut milk. Simmer until tender.",
@@ -125,7 +125,7 @@ async function seed() {
     },
     {
       name: "Apple Pie",
-      servings: 8,
+      prep_time: 90,
       ingredients: "apples, pie crust, sugar, cinnamon, flour, butter",
       instructions:
         "Slice apples. Mix with sugar and spices. Fill crust. Top and bake at 425°F.",
@@ -133,7 +133,7 @@ async function seed() {
     },
     {
       name: "Spaghetti Carbonara",
-      servings: 2,
+      prep_time: 20,
       ingredients: "spaghetti, eggs, bacon, parmesan, black pepper",
       instructions:
         "Cook pasta. Fry bacon. Mix eggs and cheese. Toss hot pasta with egg mixture.",
@@ -142,7 +142,7 @@ async function seed() {
     },
     {
       name: "Greek Salad",
-      servings: 4,
+      prep_time: 15,
       ingredients:
         "cucumber, tomatoes, olives, feta cheese, olive oil, oregano",
       instructions:
@@ -151,7 +151,7 @@ async function seed() {
     },
     {
       name: "Beef Stew",
-      servings: 6,
+      prep_time: 120,
       ingredients: "beef chuck, potatoes, carrots, onion, beef broth, herbs",
       instructions:
         "Brown beef. Sauté vegetables. Add broth and herbs. Simmer 2 hours until tender.",
@@ -160,7 +160,7 @@ async function seed() {
     },
     {
       name: "Lemon Bars",
-      servings: 12,
+      prep_time: 60,
       ingredients: "flour, butter, sugar, eggs, lemons, powdered sugar",
       instructions:
         "Make shortbread crust. Bake. Pour lemon filling over. Bake again. Dust with sugar.",
@@ -169,7 +169,7 @@ async function seed() {
     },
     {
       name: "Fish and Chips",
-      servings: 4,
+      prep_time: 30,
       ingredients: "white fish, potatoes, flour, beer, oil for frying",
       instructions:
         "Cut potatoes. Make beer batter. Fry chips first, then battered fish until golden.",
@@ -177,7 +177,7 @@ async function seed() {
     },
     {
       name: "Caprese Salad",
-      servings: 2,
+      prep_time: 10,
       ingredients: "tomatoes, mozzarella, basil, balsamic vinegar, olive oil",
       instructions:
         "Slice tomatoes and mozzarella. Arrange with basil. Drizzle with oil and vinegar.",
@@ -185,7 +185,7 @@ async function seed() {
     },
     {
       name: "Chicken Soup",
-      servings: 6,
+      prep_time: 45,
       ingredients: "chicken, noodles, carrots, celery, onion, chicken broth",
       instructions:
         "Simmer chicken in broth. Shred meat. Add vegetables and noodles. Cook until tender.",
@@ -193,7 +193,7 @@ async function seed() {
     },
     {
       name: "Chocolate Cake",
-      servings: 10,
+      prep_time: 90,
       ingredients: "flour, cocoa powder, sugar, eggs, butter, chocolate",
       instructions:
         "Mix dry ingredients. Cream butter and sugar. Add eggs. Combine all. Bake layers.",
@@ -201,7 +201,7 @@ async function seed() {
     },
     {
       name: "Pad Thai",
-      servings: 3,
+      prep_time: 25,
       ingredients:
         "rice noodles, shrimp, eggs, bean sprouts, tamarind, fish sauce",
       instructions:
@@ -211,23 +211,28 @@ async function seed() {
     },
     {
       name: "Quesadillas",
-      servings: 2,
+      prep_time: 15,
       ingredients: "tortillas, cheese, chicken, peppers, onions",
       instructions:
         "Fill tortillas with cheese and fillings. Cook in pan until cheese melts and tortilla crisps.",
       photo: "https://images.unsplash.com/photo-1618040996337-56904b7850b9",
     },
+    {
+      name: "Gheysava",
+      prep_time: 30,
+      ingredients: "eggs, dates, cinnamon, saffron, sugar, butter, rose water",
+      instructions:
+        "Pit and chop dates. Whisk eggs with sugar and spices. Cook eggs gently. Fold in dates and rose water. Garnish with cinnamon and saffron.",
+      photo: "https://images.unsplash.com/photo-1606787366850-de6330128bfc",
+    },
   ];
 
-  // Create 23 recipes with specific user assignments
-  const recipes = [];
-
-  // Define which recipes each user should get (by index)
+  // Update user recipe assignments to include the new recipe
   const userRecipeAssignments = {
     0: [0, 1, 2, 3, 4], // Alice: Pancakes, Stir Fry, Cookies, Caesar Salad, Tacos
     1: [5, 6, 7, 8, 9], // Bob: Risotto, Banana Bread, Salmon, Soup, Pizza
     2: [10, 11, 12, 13, 14], // Charlie: French Toast, Curry, Apple Pie, Carbonara, Greek Salad
-    3: [15, 16, 17, 18], // Diana: Beef Stew, Lemon Bars, Fish & Chips, Caprese
+    3: [15, 16, 17, 18, 23], // Diana: Beef Stew, Lemon Bars, Fish & Chips, Caprese, Gheysava
     4: [19, 20, 21, 22], // Emma: Chicken Soup, Chocolate Cake, Pad Thai, Quesadillas
   };
 
@@ -244,7 +249,7 @@ async function seed() {
 
       const createdRecipe = await createRecipe(
         recipe.name,
-        recipe.servings,
+        recipe.prep_time, // Changed from recipe.servings to recipe.prep_time
         recipe.ingredients,
         recipe.instructions,
         user.id
