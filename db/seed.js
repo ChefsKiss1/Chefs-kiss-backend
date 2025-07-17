@@ -12,6 +12,7 @@ console.log("🌱 Database seeded.");
 async function seed() {
   // Create 5 users
   const users = [];
+  const recipes = []; // Add this line - declare the recipes array
   const userNames = ["Alice", "Bob", "Charlie", "Diana", "Emma"];
 
   for (let i = 0; i < userNames.length; i++) {
