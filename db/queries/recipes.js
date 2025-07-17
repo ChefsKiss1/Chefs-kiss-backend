@@ -28,16 +28,7 @@ export async function createRecipe(
 
 export async function getAllRecipes() {
   const sql = `
-    SELECT 
-      recipe.id,
-      recipe.title, 
-      recipe.prep_time, 
-      photos.recipe_id, 
-      users.username,
-      photos.img_url
-    FROM recipe
-    JOIN users ON recipe.creator_id = users.id
-    LEFT JOIN photos ON photos.recipe_id = recipe.id
+    SELECT * FROM recipe
   `;
   const { rows: allRecipes } = await db.query(sql);
   return allRecipes;
@@ -141,4 +132,26 @@ export async function getRandomRecipes(limit = 9) {
   `;
   const { rows } = await db.query(sql, [limit]);
   return rows;
+}
+
+export async function getRecipeWithPhotosById(id) {
+  try {
+    const recipe = await db.query("SELECT * FROM recipe WHERE id = $1", [id]);
+    if (!recipe) {
+      console.log("Recipe not found for ID:", id);
+      return null;
+    }
+
+    const photos = await db.query(
+      "SELECT img_url FROM photos WHERE recipe_id = $1",
+      [id]
+    );
+    console.log("Found recipe:", recipe);
+    console.log("Found photos:", photos);
+
+    return { ...recipe, photos };
+  } catch (error) {
+    console.error("Error in getRecipeWithPhotosById:", error);
+    throw error; // rethrow so it triggers 500 response
+  }
 }
