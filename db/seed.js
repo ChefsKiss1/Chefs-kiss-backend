@@ -137,7 +137,8 @@ async function seed() {
       ingredients: "spaghetti, eggs, bacon, parmesan, black pepper",
       instructions:
         "Cook pasta. Fry bacon. Mix eggs and cheese. Toss hot pasta with egg mixture.",
-      photo: "https://images.unsplash.com/photo-1621996346565-e3dbc353d2e5",
+      photo:
+        "https://images.unsplash.com/photo-1546549032-9571cd6b27df?q=80&w=987&auto=format&fit=c[…]0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Greek Salad",
@@ -205,7 +206,8 @@ async function seed() {
         "rice noodles, shrimp, eggs, bean sprouts, tamarind, fish sauce",
       instructions:
         "Soak noodles. Stir-fry shrimp and eggs. Add noodles and sauce. Toss with sprouts.",
-      photo: "https://images.unsplash.com/photo-1559314809-0f31657def5e",
+      photo:
+        "https://images.unsplash.com/photo-1626804475297-41608ea09aeb?q=80&w=1470&auto=format&f[…]0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Quesadillas",
