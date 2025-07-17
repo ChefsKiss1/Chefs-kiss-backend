@@ -12,7 +12,7 @@ console.log("🌱 Database seeded.");
 async function seed() {
   // Create 5 users
   const users = [];
-  const recipes = []; // Add this line - declare the recipes array
+  const recipes = [];
   const userNames = ["Alice", "Bob", "Charlie", "Diana", "Emma"];
 
   for (let i = 0; i < userNames.length; i++) {
@@ -130,7 +130,8 @@ async function seed() {
       ingredients: "apples, pie crust, sugar, cinnamon, flour, butter",
       instructions:
         "Slice apples. Mix with sugar and spices. Fill crust. Top and bake at 425°F.",
-      photo: "https://images.unsplash.com/photo-1535920527002-b35e96722bd4",
+      photo:
+        "https://images.unsplash.com/photo-1562007908-17c67e878c88?q=80&w=687&auto=format&fit=c[…]0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
     },
     {
       name: "Spaghetti Carbonara",
