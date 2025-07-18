@@ -111,7 +111,6 @@ export async function getRecipesByUserId(user_id) {
     WHERE recipe.creator_id = $1;
   `;
   const { rows } = await db.query(sql, [user_id]);
-  console.log(rows);
   return rows;
 }
 
@@ -119,7 +118,7 @@ export async function getRandomRecipes(limit = 9) {
   const sql = `
     SELECT 
       recipe.id,
-      recipe.title AS name,
+      recipe.title,
       recipe.prep_time, 
       photos.recipe_id, 
       users.username,
@@ -146,12 +145,9 @@ export async function getRecipeWithPhotosById(id) {
       "SELECT img_url FROM photos WHERE recipe_id = $1",
       [id]
     );
-    console.log("Found recipe:", recipe);
-    console.log("Found photos:", photos);
-
     return { ...recipe, photos };
   } catch (error) {
     console.error("Error in getRecipeWithPhotosById:", error);
-    throw error; // rethrow so it triggers 500 response
+    throw error;
   }
 }

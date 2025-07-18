@@ -68,7 +68,7 @@ export const getTopFavoritedRecipes = async (limit = 9) => {
     `
     SELECT
       recipe.id,
-      recipe.title AS name,
+      recipe.title,
       users.username,
       COUNT(favorited_recipes.recipe_id) AS favoriteCount,
       photos.img_url
@@ -89,7 +89,7 @@ export const getUserFavorites = async (userId) => {
   const { rows } = await db.query(
     `SELECT 
       recipe.id,
-      recipe.title as name,
+      recipe.title,
       recipe.prep_time,
       recipe.ingredient_list as ingredients,
       recipe.instruction_list as instructions,
