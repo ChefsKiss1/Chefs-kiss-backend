@@ -2,12 +2,13 @@ import express from "express";
 import {
   createRecipe,
   getAllRecipes,
-  getRecipeWithPhotosById, // Use this to fetch recipe + photos
+  getRecipeWithPhotosById,
   deleteRecipeById,
   updateRecipeById,
   getRecipesByUserId,
   getRandomRecipes,
 } from "#db/queries/recipes";
+import { createPhoto } from "#db/queries/photos";
 import requireBody from "#middleware/requireBody";
 import requireUser from "#middleware/requireUser";
 
@@ -29,7 +30,8 @@ router
     requireBody(["title", "prepTime", "ingredientList", "instructionList"]),
     async (req, res, next) => {
       try {
-        const { title, prepTime, ingredientList, instructionList } = req.body;
+        const { title, prepTime, ingredientList, instructionList, imageUrl } =
+          req.body;
         const creatorId = req.user.id;
         const recipe = await createRecipe(
           title,
@@ -39,6 +41,10 @@ router
           creatorId
         );
 
+        if (imageUrl) {
+          await createPhoto(recipe.id, imageUrl);
+        }
+
         res.status(201).json(recipe);
       } catch (error) {
         console.error(error);
@@ -46,8 +52,6 @@ router
       }
     }
   );
-
-// GET recipe by ID with photos
 
 router.get("/random", async (req, res) => {
   try {
